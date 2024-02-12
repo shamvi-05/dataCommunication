@@ -1,0 +1,492 @@
+// 1. Retrieve IP address of system.
+package practice;
+
+// Import necessary classes from java.net package for networking operations.
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+// Define a public class named HotsIPAddress.
+public class HotsIPAddress {
+
+    // Define the main method.
+    public static void main(String[] args) throws UnknownHostException {
+        
+        // Retrieve the local host's InetAddress object which represents the system's IP address and hostname.
+        InetAddress localHost = InetAddress.getLocalHost();
+        
+        // Print the IP address of the local host system.
+        System.out.println("system ip address: " + localHost.toString());
+        
+        // Print the hostname of the local host system.
+        System.out.println("system name is: " + localHost.getHostName());
+    }
+}
+
+
+
+
+// 2. Retrieve different interfaces of network.
+import java.net.*;
+import java.util.*;
+
+// Define a public class named NetworkDevices.
+public class NetworkDevices {
+
+    // Define the main method.
+    public static void main(String[] args) throws SocketException {
+        
+        // Get an enumeration of all network interfaces available on the system.
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        
+        // Iterate over each network interface.
+        while (interfaces.hasMoreElements()) {
+            
+            // Get the next network interface in the enumeration.
+            NetworkInterface nexInterface = interfaces.nextElement();
+            
+            // Print the display name of the current network interface.
+            System.out.println("interface name: " + nexInterface.getDisplayName());
+            
+            // Print the MAC (hardware) address of the current network interface.
+            System.out.println("MAC Address: " + Arrays.toString(nexInterface.getHardwareAddress()));
+            
+            // Get an enumeration of all IP addresses associated with the current network interface.
+            Enumeration<InetAddress> ipAddress = nexInterface.getInetAddresses();
+            
+            // Iterate over each IP address associated with the current network interface.
+            while (ipAddress.hasMoreElements()) {
+                
+                // Get the next IP address in the enumeration.
+                InetAddress addr = ipAddress.nextElement();
+                
+                // Print the IP address of the current network interface.
+                System.out.println("Interface Address: " + addr.toString());
+            }
+            
+            // Print a separator line for clarity between different network interfaces.
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+// 3. Retrieve host name.
+
+// Import necessary classes from java.net package for networking operations.
+import java.net.*;
+import java.util.*;
+
+// Define a public class named HostName.
+public class HostName {
+
+    // Define the main method.
+    public static void main(String[] args) throws UnknownHostException {
+        
+        // Create a Scanner object for user input.
+        Scanner sc = new Scanner(System.in);
+        
+        // Prompt the user to enter an IP address.
+        System.out.println("Enter IP Address: ");
+        
+        // Read the entered IP address from the user.
+        String ipAddress = sc.nextLine();
+        
+        try {
+            // Get the InetAddress object representing the specified IP address.
+            InetAddress address = InetAddress.getByName(ipAddress);
+            
+            // Print the host name corresponding to the specified IP address.
+            System.out.println("Host Name: " + address.getHostName());
+        } catch (UnknownHostException e) {
+            // If the host name cannot be found for the specified IP address, print an error message.
+            System.err.println("Unable to find host name for the specified IP address");
+            
+            // Print the stack trace of the exception.
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+
+
+// 4. Determine class of an IP address.
+
+// Import the Scanner class from java.util package for user input.
+import java.util.Scanner;
+
+// Define a public class named q4.
+public class q4 {
+
+    // Define the main method.
+    public static void main(String[] args) {
+        
+        // Create a Scanner object for user input.
+        Scanner sc = new Scanner(System.in);
+        
+        // Prompt the user to enter an IP address.
+        System.out.println("A program to determine the class of an IP address using the technique of bit masking:");
+        System.out.print("Enter an IP address: ");
+        
+        // Read the entered IP address from the user.
+        String ipAddress = sc.nextLine();
+        
+        // Split the IP address into octets based on the dot separator.
+        String[] octets = ipAddress.split("\\.");
+        
+        // Checking if the IP address has four octets.
+        if (octets.length == 4) {
+            try {
+                // Convert the first octet to an integer for bit masking.
+                int firstOctet = Integer.parseInt(octets[0]);
+                
+                // Using bit masking to determine the class of the IP address.
+                if ((firstOctet & 0b10000000) == 0) {
+                    System.out.println("It belongs to Class A");
+                } else if ((firstOctet & 0b11000000) == 0b10000000) {
+                    System.out.println("It belongs to Class B");
+                } else if ((firstOctet & 0b11100000) == 0b11000000) {
+                    System.out.println("It belongs to Class C");
+                } else {
+                    System.out.println("Invalid IP address");
+                }
+            } catch (NumberFormatException e) {
+                // If the octet cannot be converted to an integer, it's an invalid format.
+                System.out.println("Invalid IP address format");
+            }
+        } else {
+            // If the IP address does not have four octets, it's an invalid format.
+            System.out.println("Invalid IP address format");
+        }
+    }
+}
+
+
+
+
+
+
+
+// 5. All details from the URL.
+
+// Import necessary classes from java.net package for working with URLs.
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Scanner;
+
+// Define a public class named URLExtractor.
+public class URLExtractor {
+
+    // Define the main method.
+    public static void main(String[] args) {
+        
+        // Create a Scanner object for user input.
+        Scanner scanner = new Scanner(System.in);
+        
+        // Prompt the user to enter a URL.
+        System.out.print("Enter URL: ");
+        
+        // Read the entered URL from the user.
+        String urlString = scanner.nextLine();
+        
+        try {
+            // Create a new URL object from the entered URL string.
+            URL url = new URL(urlString);
+            
+            // Extract various components from the URL.
+            String protocol = url.getProtocol();
+            String host = url.getHost();
+            int port = url.getPort();
+            String userInfo = url.getUserInfo();
+            String path = url.getPath();
+            String file = url.getFile();
+            String query = url.getQuery();
+            String ref = url.getRef();
+            
+            // Print out the extracted details from the URL.
+            System.out.println("URL: " + urlString);
+            System.out.println("Protocol: " + protocol);
+            System.out.println("Host: " + host);
+            System.out.println("Port: " + port);
+            System.out.println("User Info: " + userInfo);
+            System.out.println("Path: " + path);
+            System.out.println("File: " + file);
+            System.out.println("Query: " + query);
+            System.out.println("Reference: " + ref);
+        } catch (MalformedURLException e) {
+            // If the URL is invalid, print an error message.
+            System.out.println("Invalid URL: " + urlString);
+            
+            // Print the stack trace of the exception.
+            e.printStackTrace();
+        } finally {
+            // Close the scanner to release system resources.
+            scanner.close();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 6. Extract source code of website.
+
+// Import necessary classes from java.net package for working with URLs.
+import java.net.URL;
+
+// Import necessary classes from java.io package for input/output operations.
+import java.io.*;
+
+// Define a public class named lab2_q2.
+public class lab2_q2 {
+    
+    // Define the main method.
+    public static void main(String[] args) {
+        
+        try {
+            // Create a URL object representing the website whose source code is to be extracted.
+            URL url = new URL("https://www.cardekho.com/used-car-details/used-Honda-City-I-Vtec-Sv-carsChennai_70fc10eb-1b37-4c2e-b61f-de0ebe7d7d70.htm");
+            
+            // Create a BufferedReader object to read the contents of the website.
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            
+            // Variable to store each line read from the website.
+            String line;
+            
+            // Read each line from the website until the end of the stream is reached.
+            while ((line = reader.readLine()) != null) {
+                
+                // Print each line to the console.
+                System.out.println(line);
+            }
+            
+            // Close the BufferedReader to release system resources.
+            reader.close();
+        } catch (Exception e) {
+            // If an exception occurs, print the error message.
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 7. Extract header of URL.
+
+// Import necessary classes from java.io package for input/output operations.
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+// Import necessary classes from java.net package for networking operations.
+import java.net.*;
+
+// Define a public class named lab2_q3.
+public class lab2_q3 {
+
+    // Define the main method.
+    public static void main(String[] args) throws Exception {
+        
+        // Create a BufferedReader object to read user input from the console.
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        
+        // Prompt the user to enter the URL.
+        System.out.print("Enter the URL: ");
+        
+        // Read the entered URL from the user.
+        String urlString = reader.readLine();
+        
+        // Create a URL object from the entered URL string.
+        URL url = new URL(urlString);
+        
+        // Open a connection to the URL.
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        
+        // Set the request method to GET.
+        connection.setRequestMethod("GET");
+        
+        // Print the status code of the connection.
+        System.out.println("Status Code: " + connection.getResponseCode());
+        
+        // Print the content type of the connection.
+        System.out.println("Content Type: " + connection.getContentType());
+        
+        // Print the date header field of the connection.
+        System.out.println("Date: " + connection.getHeaderField("Date"));
+        
+        // Iterate over all the header fields of the connection and print each one.
+        for (int i = 1;; i++) {
+            String headerName = connection.getHeaderFieldKey(i);
+            String headerValue = connection.getHeaderField(i);
+            if (headerName == null && headerValue == null) {
+                break;
+            }
+            System.out.println(headerName + ": " + headerValue);
+        }
+        
+        // Disconnect the connection to release system resources.
+        connection.disconnect();
+    }
+}
+
+
+
+
+
+
+
+// 8. Simulate DNS server.
+
+// Import necessary classes from java.net package for networking operations.
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+// Import necessary classes from java.util package for collections and input handling.
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+// Define a public class named DnsSimulation.
+public class DnsSimulation {
+
+    // Define the main method.
+    public static void main(String[] args) {
+        
+        // Map to store DNS records (Name -> {IP, Access Count})
+        Map<String, String[]> dnsRecords = new HashMap<>();
+        
+        // Create a Scanner object for user input.
+        Scanner scanner = new Scanner(System.in);
+        
+        // Infinite loop to display the menu and handle user choices.
+        while (true) {
+            // Display menu options.
+            System.out.println("1. Add DNS Record");
+            System.out.println("2. Access Site");
+            System.out.println("3. Display DNS Table");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            
+            // Read user choice.
+            int choice = scanner.nextInt();
+            
+            // Switch case to handle different menu options.
+            switch (choice) {
+                case 1:
+                    addDnsRecord(dnsRecords, scanner);
+                    break;
+                case 2:
+                    accessSite(dnsRecords, scanner);
+                    break;
+                case 3:
+                    displayDnsTable(dnsRecords);
+                    break;
+                case 4:
+                    displayDnsTable(dnsRecords);
+                    System.out.println("Exiting DNS Simulation. Goodbye!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+    }
+
+    // Method to add a DNS record.
+    private static void addDnsRecord(Map<String, String[]> dnsRecords, Scanner scanner) {
+        System.out.print("Enter the name of the site: ");
+        String name = scanner.next();
+        if (dnsRecords.containsKey(name)) {
+            System.out.println("Site already exists in DNS records. Please enter a different site name.");
+            return;
+        }
+        // Fetch IP address from host name
+        String ip = getIpAddress(name);
+        if (ip != null) {
+            // Add or update DNS record
+            dnsRecords.put(name, new String[]{ip, "0"});
+            System.out.println("DNS Record added successfully.");
+        } else {
+            System.out.println("Unable to fetch IP address for the given host name.");
+        }
+    }
+
+    // Method to access a site and update access count.
+    private static void accessSite(Map<String, String[]> dnsRecords, Scanner scanner) {
+        System.out.print("Enter the name of the site to access: ");
+        String name = scanner.next();
+        // Check if the site exists in DNS records
+        if (dnsRecords.containsKey(name)) {
+            // Increment access count
+            String[] record = dnsRecords.get(name);
+            int accessCount = Integer.parseInt(record[1]) + 1;
+            record[1] = String.valueOf(accessCount);
+            // Display access information
+            System.out.println("Accessing site: " + name);
+            System.out.println("IP Address: " + record[0]);
+            System.out.println("Access Count: " + accessCount);
+        } else {
+            System.out.println("Site not found in DNS records.");
+        }
+    }
+
+    // Method to display the DNS table.
+    private static void displayDnsTable(Map<String, String[]> dnsRecords) {
+        System.out.println("DNS Table:");
+        System.out.println("------------------------------------------------");
+        System.out.println("| Name               | IP Address    | Access Count |");
+        System.out.println("------------------------------------------------");
+        for (Map.Entry<String, String[]> entry : dnsRecords.entrySet()) {
+            String name = entry.getKey();
+            String ip = entry.getValue()[0];
+            String accessCount = entry.getValue()[1];
+            System.out.printf("| %-20s | %-13s | %-12s |\n", name, ip, accessCount);
+        }
+        System.out.println("------------------------------------------------");
+    }
+
+    // Method to fetch IP address from host name using InetAddress.
+    private static String getIpAddress(String hostName) {
+        try {
+            InetAddress inetAddress = InetAddress.getByName(hostName);
+            return inetAddress.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+
